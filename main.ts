@@ -2,6 +2,7 @@ import axios from "axios";
 import fs from 'fs'
 import { load } from "cheerio";
 import { parseNumber } from "./utils";
+import { features } from "process";
 
 async function main() {
     // GET DEALS
@@ -92,11 +93,36 @@ async function main() {
                 console.log(faqs)
 
                 //#region TESTIMONIALS
+                let testimonials = $(element).find('[data-testimonial]').toArray().map(item => ({
+                    title: $(item).children('h2').text().trim(),
+                    description: $(item).children('p:nth(0)').text().trim(),
+                    from: $(item).children('div:nth(0)').text().trim(),
+                }))
+
+                console.log(testimonials)
                 //#endregion 
                 break;
             case 'features':
+                let features = {
+                    title: $(tab).children('h2').text().trim(),
+                    description: $(tab).children('p:nth(0)').text().trim(),
+                    features: $(tab).children('ul:nth(0)').children('li').toArray().map(item => ({
+                        title: $(item).children('div').children('h3:nth(0)').text().trim(),
+                        description: $(item).children('div').children('p:nth(0)').text().trim(),
+                    }))
+                }
+                console.log(features)
                 break;
             case 'reviews':
+                let reviews = {
+                    title: $(tab).children('div:nth(0)').children('div:nth(0)').children('h2:nth(0)').text().trim(),
+                    score: $(tab).children('div:nth(0)').children('div:nth(0)').children('div:nth(0)').children('div:nth(1)').children('span:nth(0)').text().trim(),
+                    count: parseNumber($(tab).children('div:nth(0)').children('div:nth(0)').children('div:nth(0)').children('div:nth(1)').children('span:nth(0)').text().trim()),
+                    reviewers: $(tab).children('ul:nth(0)').children('li').toArray().map(item => ({
+                        name: $(item).children('div:nth(0)').children('div:nth(0)').children('h3:nth(0)').text().trim()
+                    }))
+                }
+                console.log(reviews)
                 break;
             case 'alternatives':
                 break;
