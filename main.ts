@@ -33,7 +33,7 @@ async function main() {
     let tags = element.find('div:nth(0)').text().split('>').map(s => s.replace('\n', '').trim())
     let imageURL = element.find('div:nth(1) img[loading="lazy"]').attr('src')
     let title = element.find('div:nth(1) span.header-xl').text().trim()
-    let subTitle = element.find('div:nth(1) span.header-xl').next().text().trim()
+    let subtitle = element.find('div:nth(1) span.header-xl').next().text().trim()
     let description = element.children('p:nth(0)').text().trim()
 
     let element2 = element.find('.grid').children('div:nth(0)').children('div:nth(0)').children('div:nth(1)')
@@ -49,7 +49,7 @@ async function main() {
     console.log(tags)
     console.log(imageURL)
     console.log(title)
-    console.log(subTitle)
+    console.log(subtitle)
     console.log(description)
     console.log(reviews)
     console.log(avaiableDealCount)
@@ -125,6 +125,19 @@ async function main() {
                 console.log(reviews)
                 break;
             case 'alternatives':
+                let alternatives = {
+                    title: $(tab).children('div:nth(0)').children('div:nth(0)').children('a:nth(0)').text().trim(),
+                    href: $(tab).children('div:nth(0)').children('div:nth(0)').children('a:nth(0)').attr('href'),
+                    alternatives: $(tab).children('div:nth(1)').children('div').toArray().map(item=>({
+                        href: $(item).children('a').attr('href'),
+                        image: $(item).children('a').children('div:nth(0)').children('img').attr('src'),
+                        title: $(item).children('a').children('div:nth(0)').children('div:nth(0)').children('h3').text().trim(),
+                        subtitle: $(item).children('a').children('div:nth(0)').children('div:nth(0)').children('div:nth(0)').text().trim(),
+                        score: 5,
+                        avaiableDealCount: parseNumber($(item).children('a:nth(0)').children('div:nth(0)').children('div:nth(0)').children('div:nth(1)').children('p').text().trim())
+                    }))
+                }
+                console.log(alternatives)
                 break;
             case 'vs_pages':
                 break;
