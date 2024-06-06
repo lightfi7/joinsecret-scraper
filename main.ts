@@ -23,7 +23,7 @@ async function main() {
 
     const html = fs.readFileSync('test.html')
     const $ = load(html)
-
+    
     const deal = {}
 
     //#region HEADER
